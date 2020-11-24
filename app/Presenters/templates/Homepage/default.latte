@@ -1,10 +1,23 @@
 {block content}
+<h1>Vyberte bod v mapě</h1>
+<p>Stačí do mapy kliknout, vybraný bod lze posouvat nebo kliknout jinam.</p>
+<div id="m" style="height:520px;margin-bottom:10px"></div>
 
-<div id="m" style="height:380px"></div>
-{control answerForm}
+{form answerForm}
+	<div style="display:none">
+		{input lon}
+		{input lat}
+	</div>
+ 	<div class="form-group">
+		{input recaptcha}
+	</div>
+	 <div class="form-group">
+		{input send, 'class'=>'btn btn-primary'}
+	</div>
+{/form}
 
 <script>
-var m = new SMap(JAK.gel("m"), SMap.Coords.fromWGS84(14.400307, 50.071853));
+var m = new SMap(JAK.gel("m"), SMap.Coords.fromWGS84(15.465980828124998, 49.778330012770894));
 
 /*změna velikosti okna*/
 m.addControl(new SMap.Control.Sync());
