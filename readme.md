@@ -1,6 +1,7 @@
 GeoForm
 =================
-
+- demo: https://geoform.cernik.name/
+- results: https://geoform.cernik.name/result.txt
 
 Requirements
 ------------
