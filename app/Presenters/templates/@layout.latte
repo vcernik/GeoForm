@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+
+	<title>{ifset title}{include title|stripHtml} | {/ifset}GeoForm</title>
+
+	<script type="text/javascript" src="https://api.mapy.cz/loader.js"></script>
+	<script type="text/javascript">Loader.load();</script>
+</head>
+
+<body>
+	<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
+
+	{include content}
+
+	{block scripts}
+	<script src="https://nette.github.io/resources/js/3/netteForms.min.js"></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+	{/block}
+</body>
+</html>

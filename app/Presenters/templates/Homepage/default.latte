@@ -1,0 +1,78 @@
+{block content}
+
+<div id="m" style="height:380px"></div>
+{control answerForm}
+
+<script>
+var m = new SMap(JAK.gel("m"), SMap.Coords.fromWGS84(14.400307, 50.071853));
+
+/*změna velikosti okna*/
+m.addControl(new SMap.Control.Sync());
+
+/*mapa*/
+m.addDefaultLayer(SMap.DEF_OPHOTO);
+m.addDefaultLayer(SMap.DEF_TURIST);
+m.addDefaultLayer(SMap.DEF_SMART_BASE).enable();
+
+var layerSwitch = new SMap.Control.Layer();
+layerSwitch.addDefaultLayer(SMap.DEF_SMART_BASE);
+layerSwitch.addDefaultLayer(SMap.DEF_OPHOTO);
+layerSwitch.addDefaultLayer(SMap.DEF_TURIST);
+m.addControl(layerSwitch, { left:"8px", top:"9px"});
+
+
+/* Ovládání myší */
+var mouse = new SMap.Control.Mouse(SMap.MOUSE_PAN | SMap.MOUSE_WHEEL | SMap.MOUSE_ZOOM); 
+m.addControl(mouse);
+/*kompas*/
+var o = { title:"Posun mapy" };
+var c = new SMap.Control.Compass(o);
+m.addControl(c, { right:"8px", top:"9px"});
+/*zoom*/
+var c = new SMap.Control.Zoom();
+m.addControl(c, { right:"8px", top:"90px"});
+
+
+/*značka v mapě - příprava*/
+var l = new SMap.Layer.Marker();
+m.addLayer(l).enable();
+var mark = new SMap.Marker(SMap.Coords.fromWGS84(14.400307, 50.071853));
+mark.decorate(SMap.Marker.Feature.Draggable);
+l.addMarker(mark);
+l.disable();
+
+
+/*kliknutí do mapy - aktivace značky*/
+function click(e, elm) {
+    var coords = SMap.Coords.fromEvent(e.data.event, m);
+	mark.setCoords(coords);
+	l.enable();
+
+	getCoords();
+}
+m.getSignals().addListener(window, "map-click", click); 
+
+
+
+/*tažení značky*/
+function start(e) { 
+    var node = e.target.getContainer();
+    node[SMap.LAYER_MARKER].style.cursor = "help";
+}
+function stop(e) {
+    var node = e.target.getContainer();
+    node[SMap.LAYER_MARKER].style.cursor = "";
+	getCoords();
+}
+var signals = m.getSignals();
+signals.addListener(window, "marker-drag-stop", stop);
+signals.addListener(window, "marker-drag-start", start);      
+
+
+/*zapíše souřadnice do inputu*/
+function getCoords(){
+	document.getElementById('frm-answerForm-lat').value = mark.getCoords().y;
+	document.getElementById('frm-answerForm-lon').value = mark.getCoords().x;
+}
+
+</script>
